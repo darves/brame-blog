@@ -1,0 +1,7 @@
+<div *ngFor="let item of response?.data">
+  <ng-container
+  *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"
+></ng-container>
+</div>
+
+<app-pagination [apiResponse]="response" (pageChange)="onPageChange($event)"></app-pagination>

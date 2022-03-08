@@ -1,0 +1,460 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "title": "Brame Blog API",
+      "description": "This is the documentation for blog project task. Here you can find all the API routes that you will be using. All successful responses contain data object (and several others if response is paginated) and all error responses contain the response code and the message.",
+      "license": {
+          "name": "Apache 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.0"
+  },
+  "servers": [
+      {
+          "url": "http://18.192.182.140/api",
+          "description": "Demo API Server"
+      }
+  ],
+  "paths": {
+      "/articles": {
+          "get": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Get list of articles",
+              "description": "Returns list of articles",
+              "operationId": "getArticlesList",
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Create article",
+              "description": "Create article",
+              "operationId": "storeArticle",
+              "parameters": [
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "required": [
+                                  "title",
+                                  "body",
+                                  "category_id"
+                              ],
+                              "properties": {
+                                  "title": {
+                                      "description": "Article title",
+                                      "type": "string",
+                                      "maximum": 255
+                                  },
+                                  "body": {
+                                      "description": "Article body",
+                                      "type": "string",
+                                      "maximum": 1000
+                                  },
+                                  "category_id": {
+                                      "description": "Articles category (from categories table)",
+                                      "type": "integer",
+                                      "example": 1
+                                  }
+                              },
+                              "type": "object"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad request"
+                  }
+              }
+          }
+      },
+      "/articles/{article_id}": {
+          "get": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Get article",
+              "description": "Get article by id",
+              "operationId": "getArticle",
+              "parameters": [
+                  {
+                      "name": "article_id",
+                      "in": "path",
+                      "description": "Article id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Update article",
+              "description": "Update article by id",
+              "operationId": "updateArticle",
+              "parameters": [
+                  {
+                      "name": "article_id",
+                      "in": "path",
+                      "description": "Article id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "required": [
+                                  "title",
+                                  "body",
+                                  "category_id"
+                              ],
+                              "properties": {
+                                  "title": {
+                                      "description": "Article title",
+                                      "type": "string",
+                                      "maximum": 255
+                                  },
+                                  "body": {
+                                      "description": "Article body",
+                                      "type": "string",
+                                      "maximum": 1000
+                                  },
+                                  "category_id": {
+                                      "description": "Articles category (from categories table)",
+                                      "type": "integer",
+                                      "example": 1
+                                  }
+                              },
+                              "type": "object"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad request"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Delete article",
+              "description": "Delete article by id",
+              "operationId": "deleteArticle",
+              "parameters": [
+                  {
+                      "name": "article_id",
+                      "in": "path",
+                      "description": "Article id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          }
+      },
+      "/articles/{article_id}/comments": {
+          "get": {
+              "tags": [
+                  "Articles"
+              ],
+              "summary": "Get article comments",
+              "description": "Get article comments by article id",
+              "operationId": "getArticleComments",
+              "parameters": [
+                  {
+                      "name": "article_id",
+                      "in": "path",
+                      "description": "Article id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          }
+      },
+      "/categories": {
+          "get": {
+              "tags": [
+                  "Categories"
+              ],
+              "summary": "Get list of categories",
+              "description": "Returns list of categories",
+              "operationId": "getCategoryList",
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Categories"
+              ],
+              "summary": "Create category",
+              "description": "Create category",
+              "operationId": "storeCategory",
+              "parameters": [
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "required": [
+                                  "name",
+                                  "description"
+                              ],
+                              "properties": {
+                                  "name": {
+                                      "description": "Category name",
+                                      "type": "string",
+                                      "maximum": 255
+                                  },
+                                  "description": {
+                                      "description": "Category description",
+                                      "type": "string",
+                                      "maximum": 512
+                                  }
+                              },
+                              "type": "object"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad request"
+                  }
+              }
+          }
+      },
+      "/categories/{category_id}": {
+          "get": {
+              "tags": [
+                  "Categories"
+              ],
+              "summary": "Get category",
+              "description": "Get category by id",
+              "operationId": "getCategory",
+              "parameters": [
+                  {
+                      "name": "category_id",
+                      "in": "path",
+                      "description": "Category id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "Categories"
+              ],
+              "summary": "Update category",
+              "description": "Update category by id",
+              "operationId": "updateCategory",
+              "parameters": [
+                  {
+                      "name": "category_id",
+                      "in": "path",
+                      "description": "Category id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "required": [
+                                  "name",
+                                  "description"
+                              ],
+                              "properties": {
+                                  "name": {
+                                      "description": "Category name",
+                                      "type": "string",
+                                      "maximum": 255
+                                  },
+                                  "description": {
+                                      "description": "Cateogry description",
+                                      "type": "string",
+                                      "maximum": 512
+                                  }
+                              },
+                              "type": "object"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad request"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Categories"
+              ],
+              "summary": "Delete category",
+              "description": "Delete category by id",
+              "operationId": "deleteCategory",
+              "parameters": [
+                  {
+                      "name": "category_id",
+                      "in": "path",
+                      "description": "Category id",
+                      "required": true,
+                      "schema": {
+                          "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "api_token",
+                      "in": "query",
+                      "description": "API token",
+                      "required": true,
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "404": {
+                      "description": "Not found"
+                  }
+              }
+          }
+      }
+  },
+  "security": [
+      []
+  ]
+}

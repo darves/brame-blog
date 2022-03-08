@@ -1,0 +1,8 @@
+<div *ngIf="apiResponse">
+  <span>Page {{apiResponse.current_page}} of {{apiResponse.last_page}}</span>
+
+  <ng-container *ngFor="let page of pages">
+    <button [disabled]="page.isDisabled" mat-button (click)="onPageClick(page)">{{page.label}}</button>
+    <span> | </span>
+  </ng-container>
+</div>
