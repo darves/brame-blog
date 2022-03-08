@@ -37,10 +37,10 @@ export class ResourceService {
   public postRequest<T = any, R = ResourceGetDTO>(opt: RequestParams<T>): Observable<BaseApiSingleResponse<R>> {
     // THERE IS A BUG ON API SIDE, DOES NOT RETURN token param as required for POST;
     let params = this.resolveRequestOptions(opt, RequestMethod.Put);
-    params = {...params, ...{responseType: 'text'}}; // workaround since we have issue with a POST on API side;
 
-    console.log(params);
-    return this.httpClient
+    if (opt.enableWorkaroundForApiTextResponseTypeYesIMakeThis2Long) {
+      params = {...params, ...{responseType: 'text'}}; // workaround since we have issue with a POST on API side;
+      return this.httpClient
       .post(this.resolveUrl(opt), opt.reqBody, params)
       .pipe(
         map((res: any) => {
@@ -53,6 +53,11 @@ export class ResourceService {
           return JSON.parse(jsonString) as BaseApiSingleResponse<R>;
         })
       )
+      .pipe(catchError(this.handleError));
+    }
+
+    return this.httpClient
+      .post<BaseApiSingleResponse<R>>(this.resolveUrl(opt), opt.reqBody, params)
       .pipe(catchError(this.handleError));
   }
 
@@ -71,7 +76,7 @@ export class ResourceService {
     const credentials = this.apiMetaDataProviderService.pathRequeresCredentials(params.endpointPath, method);
 
     return {
-      parans: params.httpParams,
+      params: params.httpParams,
       withCredentials: credentials,
     };
   }
@@ -94,6 +99,7 @@ export interface BaseRequestParams {
 
 interface RequestParams<T = any> extends BaseRequestParams {
   reqBody: T;
+  enableWorkaroundForApiTextResponseTypeYesIMakeThis2Long?: boolean;
 }
 
 /**

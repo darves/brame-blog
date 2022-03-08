@@ -48,6 +48,7 @@ export class ArticlesResourceService implements ResourceList {
       url: url,
       endpointPath: this.endpointSingle,
       reqBody: data,
+      enableWorkaroundForApiTextResponseTypeYesIMakeThis2Long: true
     });
   }
 

@@ -9,7 +9,7 @@
     <a *ngIf="isLoggedIn" mat-button color="primary" routerLinkActive="active" mat-button-primary [routerLink]="'/categories'" [routerLinkActiveOptions]="{exact: true}"> Categories </a>
     <span class="menu-spacer"></span>
     <span *ngIf="isLoggedIn">Logged in as Admin</span>
-    <a *ngIf="isLoggedIn" mat-button color="primary"> Logout </a>
+    <a *ngIf="isLoggedIn" mat-button color="primary" (click)="onLogoutClick()"> Logout </a>
     <a *ngIf="!isLoggedIn" mat-button color="primary" (click)="onLoginClick()"> Login </a>
 
     <div>

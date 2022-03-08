@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AppUserService } from 'src/app/app-user.service';
 import { CategoriesResourceService } from '../shared/categories-resource.service';
 
 @Component({
@@ -7,10 +10,22 @@ import { CategoriesResourceService } from '../shared/categories-resource.service
   styleUrls: ['./categories-list.component.scss']
 })
 export class CategoriesListComponent implements OnInit {
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(public categoriesResourceService: CategoriesResourceService) { }
+  public isReadOnly: boolean = true;
+
+  constructor(public categoriesResourceService: CategoriesResourceService, private appUserService: AppUserService) { }
 
   ngOnInit(): void {
+    this.appUserService
+      .isLoggedin
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isLoggedIn) => this.isReadOnly = !isLoggedIn);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

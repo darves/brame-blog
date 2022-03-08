@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
+import { mapper } from 'src/app/core/mapper';
 import { ValidationProviderService } from 'src/app/core/validation-provider.service';
 import { CategoriesResourceService } from '../shared/categories-resource.service';
+import { CategoryGetDTO, CategoryPostDTO, CategoryPutDTO } from '../shared/category.api-model';
+import { CategoryModel } from '../shared/category.model';
 
 @Component({
   selector: 'app-category-detail',
@@ -15,12 +18,14 @@ import { CategoriesResourceService } from '../shared/categories-resource.service
 export class CategoryDetailComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
+  isNew: boolean = false;
   form: FormGroup = new FormGroup({});
-  id!: number;
+  model!: CategoryModel;
   isReadOnly!: boolean;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private validationProviderService: ValidationProviderService,
     private categoriesResourceService: CategoriesResourceService) {}
 
@@ -30,20 +35,35 @@ export class CategoryDetailComponent implements OnInit {
     this.route.params
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(params => {
-        if (params.id === 'new') {
-          alert('add new');
-        } else {
+        this.isNew = params.id === 'new';
+        if (!this.isNew) {
           this.categoriesResourceService.getSingle(params.id)
             .subscribe((res) => {
               this.form.patchValue(res.data);
-              this.id = res.data.id;
+              this.model = mapper.map(res.data, CategoryModel, CategoryGetDTO);
             });
         }
     });
   }
 
   onFormSubmit() {
-    alert('submited');
+    if (!this.form.valid) return;
+
+    let dataset = this.form.getRawValue();
+
+    if (this.isNew) {
+      delete dataset.id;
+
+      this.categoriesResourceService.post(dataset as CategoryPostDTO)
+        .subscribe((resp) => {
+          this.router.navigateByUrl(this.router.url.replace('new', resp.data.id + ''));
+        });
+    } else {
+      this.categoriesResourceService.put(dataset as CategoryPutDTO)
+        .subscribe((resp) => {
+          this.model = mapper.map(resp.data, CategoryModel, CategoryGetDTO);
+        });
+    }
   }
 
   private addControls() {

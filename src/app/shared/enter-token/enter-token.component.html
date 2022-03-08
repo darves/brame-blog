@@ -9,6 +9,6 @@
   </form>
 </div>
 <mat-card-actions>
-  <button mat-button (click)="onSubmitClick()" translate>Continue</button>
+  <button [disabled]="!form.valid" mat-button (click)="onSubmitClick()" translate>Continue</button>
 
 </mat-card-actions>

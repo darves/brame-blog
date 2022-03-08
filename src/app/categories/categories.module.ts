@@ -7,6 +7,8 @@ import { SharedModule } from '../shared/shared.module';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { mapper } from '../core/mapper';
+import { categoryProfile } from './shared/category.mapping-profile';
 
 
 @NgModule({
@@ -22,4 +24,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ]
 })
-export class CategoriesModule { }
+export class CategoriesModule {
+  constructor() {
+    mapper.addProfile(categoryProfile);
+  }
+ }

@@ -6,7 +6,7 @@ import { CategoriesListComponent } from './categories-list/categories-list.compo
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 
 const routes: Routes = [
-  {path: '', component: CategoriesListComponent},
+  {path: '', component: CategoriesListComponent, canActivate: [AuthGuard]},
   {path: ':id', component: CategoryDetailComponent, canActivate: [AuthGuard]},
 ];
 

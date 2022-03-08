@@ -1,14 +1,11 @@
 import { AutoMap } from "@automapper/classes";
 
-export class ArticleModel {
+export class CategoryModel {
   id!: number;
   @AutoMap()
-  title!: string;
+  name!: string;
   @AutoMap()
-  body!: string;
-
-  categoryId!: Number;
-  userId!: number;
+  description!: string;
 
   createdAt!: Date;
   updatedAt!: Date;

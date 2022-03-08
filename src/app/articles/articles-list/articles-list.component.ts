@@ -13,7 +13,6 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   public isReadOnly: boolean = true;
-  // data: any;
 
   constructor(public articlesResourceService: ArticlesResourceService, private appUserService: AppUserService) {
 

@@ -5,7 +5,7 @@ import { DropdownItem } from 'src/app/core/dropdown-item';
 import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
 import { ApiResponse } from 'src/app/core/resource.api-model';
 import { ResourceList, ResourceService } from 'src/app/core/resource.service';
-import { CategoryGetDTO } from './category.api-model';
+import { CategoryGetDTO, CategoryPostDTO, CategoryPutDTO } from './category.api-model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,28 @@ export class CategoriesResourceService implements ResourceList{
     return this.resourceService.getSingle<CategoryGetDTO>({
       url: url,
       endpointPath: this.endpointSingle
+    });
+  }
+
+  post(data: CategoryPostDTO) {
+    let url = `${ResourceService.apiUrlPlaceholder}${this.endpointSingle}`
+    url = url.replace('/{category_id}', '');
+
+    return this.resourceService.postRequest({
+      url: url,
+      endpointPath: this.endpointSingle,
+      reqBody: data,
+    });
+  }
+
+  put(data: CategoryPutDTO) {
+    let url = `${ResourceService.apiUrlPlaceholder}${this.endpointSingle}`
+    url = url.replace('{category_id}', `${data.id}`);
+
+    return this.resourceService.putRequest({
+      url: url,
+      endpointPath: this.endpointSingle,
+      reqBody: data,
     });
   }
 
