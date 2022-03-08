@@ -1,3 +1,7 @@
+<div *ngIf="!isReadOnly">
+  <a mat-raised-button color="primary" color="primary" [routerLink]="['/articles', 'new']"> Add Article </a>
+</div>
+
 <app-data-list [api]="articlesResourceService">
   <ng-template #itemTemplate let-item>
     <div>

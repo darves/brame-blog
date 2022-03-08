@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { ApiResponse, BaseApiResponse, BaseApiSingleResponse, ResourceGetDTO } from './resource.api-model';
 import { environment } from 'src/environments/environment';
@@ -12,7 +12,6 @@ import { ApiMetaDataProviderService } from './api-meta-data-provider.service';
   providedIn: 'root'
 })
 export class ResourceService {
-
   static apiUrlPlaceholder = ':apiUrl';
 
   constructor(private httpClient: HttpClient, private apiMetaDataProviderService: ApiMetaDataProviderService) { }
@@ -35,15 +34,29 @@ export class ResourceService {
       );
   }
 
-  protected postRequest<T = any, R = ResourceGetDTO>(opt: RequestParams<T>): Observable<BaseApiSingleResponse<R>> {
-    const params = this.resolveRequestOptions(opt, RequestMethod.Post);
+  public postRequest<T = any, R = ResourceGetDTO>(opt: RequestParams<T>): Observable<BaseApiSingleResponse<R>> {
+    // THERE IS A BUG ON API SIDE, DOES NOT RETURN token param as required for POST;
+    let params = this.resolveRequestOptions(opt, RequestMethod.Put);
+    params = {...params, ...{responseType: 'text'}}; // workaround since we have issue with a POST on API side;
 
+    console.log(params);
     return this.httpClient
-      .post<BaseApiSingleResponse<R>>(this.resolveUrl(opt), opt.reqBody, params)
+      .post(this.resolveUrl(opt), opt.reqBody, params)
+      .pipe(
+        map((res: any) => {
+          // API returns response as TEXT ALWAYS
+          // IT IGNORES OUR RequestHeader, that's why we have this crazy stuff here
+          // could be done better probably but Im lazy;
+          let text = `${res}`;
+          let jsonString = text.substring(text.indexOf('{'), text.length);
+
+          return JSON.parse(jsonString) as BaseApiSingleResponse<R>;
+        })
+      )
       .pipe(catchError(this.handleError));
   }
 
-  protected putRequest<T = any, R = ResourceGetDTO>(opt: RequestParams<T>): Observable<BaseApiSingleResponse<R>> {
+  public putRequest<T = any, R = ResourceGetDTO>(opt: RequestParams<T>): Observable<BaseApiSingleResponse<R>> {
     const params = this.resolveRequestOptions(opt, RequestMethod.Put);
     return this.httpClient
       .put<BaseApiSingleResponse<R>>(this.resolveUrl(opt), opt.reqBody, params)

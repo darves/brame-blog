@@ -4,4 +4,8 @@
 ></ng-container>
 </div>
 
+<ng-container *ngIf="response?.data && response?.data?.length === 0">
+  <h3>No data.</h3>
+</ng-container>
+
 <app-pagination [apiResponse]="response" (pageChange)="onPageChange($event)"></app-pagination>

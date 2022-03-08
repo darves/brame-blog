@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
 import { ValidationProviderService } from 'src/app/core/validation-provider.service';
 import { CategoriesResourceService } from '../shared/categories-resource.service';
@@ -26,17 +27,19 @@ export class CategoryDetailComponent implements OnInit {
   ngOnInit(): void {
     this.addControls();
 
-    this.route.params.subscribe(params => {
-      if (params.id === 'new') {
-        alert('add new');
-      } else {
-        this.categoriesResourceService.getSingle(params.id)
-          .subscribe((res) => {
-            this.form.patchValue(res.data);
-            this.id = res.data.id;
-          });
-      }
-   });
+    this.route.params
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(params => {
+        if (params.id === 'new') {
+          alert('add new');
+        } else {
+          this.categoriesResourceService.getSingle(params.id)
+            .subscribe((res) => {
+              this.form.patchValue(res.data);
+              this.id = res.data.id;
+            });
+        }
+    });
   }
 
   onFormSubmit() {

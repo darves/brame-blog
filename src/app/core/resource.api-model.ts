@@ -1,3 +1,5 @@
+import { AutoMap } from "@automapper/classes";
+
 export class ResourceGetDTO {
   id!: number;
   created_at!: string;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from 'src/app/app-user.service';
@@ -8,9 +8,12 @@ import { CategoriesResourceService } from 'src/app/categories/shared/categories-
 import { CategoryGetDTO } from 'src/app/categories/shared/category.api-model';
 import { DropdownItem } from 'src/app/core/dropdown-item';
 import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
+import { mapper } from 'src/app/core/mapper';
 import { ValidationProviderService } from 'src/app/core/validation-provider.service';
 import { ArticleCommentsResourceService } from '../article-comments-resource.service';
 import { ArticlesResourceService } from '../articles-resource.service';
+import { ArticleGetDTO, ArticlePostDTO, ArticlePutDTO } from '../shared/article.api-model';
+import { ArticleModel } from '../shared/article.model';
 
 @Component({
   selector: 'app-article-details',
@@ -20,12 +23,14 @@ import { ArticlesResourceService } from '../articles-resource.service';
 export class ArticleDetailsComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
+  isNew: boolean = false;
   form: FormGroup = new FormGroup({});
-  id!: number;
+  model!: ArticleModel;
   categories!: DropdownItem<CategoryGetDTO>[];
   isReadOnly!: boolean;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private articleResourceService: ArticlesResourceService,
     private validationProviderService: ValidationProviderService,
@@ -41,18 +46,16 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
         this.categories = categories;
       });
 
-    this.route.params.subscribe(params => {
-      if (params.id === 'new') {
-        alert('add new');
-      } else {
+    this.route.params
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(params => {
+      this.isNew = params.id === 'new';
+      if (!this.isNew) {
         this.articleResourceService.getSingle(params.id)
           .subscribe((res) => {
-            console.log(res);
             this.form.patchValue(res.data);
-            this.id = res.data.id;
+            this.model = mapper.map(res.data, ArticleModel, ArticleGetDTO);
           });
-
-        // alert(params.id);
       }
    });
 
@@ -71,9 +74,29 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
-    alert('submited');
+    if (!this.form.valid) return;
+
+    let dataset = this.form.getRawValue();
+
+    if (this.isNew) {
+      delete dataset.id;
+
+      this.articleResourceService.post(dataset as ArticlePostDTO)
+        .subscribe((resp) => {
+          this.router.navigateByUrl(this.router.url.replace('new', resp.data.id + ''));
+        });
+    } else {
+      this.articleResourceService.put(dataset as ArticlePutDTO)
+        .subscribe((resp) => {
+          this.model = mapper.map(resp.data, ArticleModel, ArticleGetDTO);
+        });
+    }
   }
 
+  /**
+   * we can also introduce mapping here to completely separate frontend from API DTOs
+   * but since no time I'll just go easy way;
+   */
   private addControls() {
     this.form.addControl('id', new FormControl(''));
     this.form.addControl('body', new FormControl(''));

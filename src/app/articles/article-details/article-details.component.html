@@ -1,3 +1,6 @@
+<p *ngIf="model">
+  UserId: {{model.id}}, Updated At: {{model.createdAt | date:'medium'}}, Updated At: {{model.createdAt | date:'medium'}}
+</p>
 <form #articleDetailForm class="example-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
   <mat-form-field appearance="fill">
     <mat-label>Title</mat-label>
@@ -21,10 +24,10 @@
   <button *ngIf="!isReadOnly" mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
 </form>
 
-<ng-container *ngIf="id">
+<ng-container *ngIf="model && model.id">
   <h1>Comments</h1>
 
-  <app-data-list [api]="articleCommentsResourceService" [params]="id">
+  <app-data-list [api]="articleCommentsResourceService" [params]="model.id">
     <ng-template #itemTemplate let-item>
       <div>
         <h3>{{item.title}}</h3>

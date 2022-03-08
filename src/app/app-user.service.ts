@@ -8,6 +8,9 @@ import { map } from 'rxjs/operators';
 export class AppUserService {
 
   private _token = new BehaviorSubject<string | null>(null);
+  public get token() {
+    return this._token.value;
+  }
   public setToken(token: string) {
     this._token.next(token);
   }
@@ -18,4 +21,6 @@ export class AppUserService {
     );
 
   constructor() { }
+
+
 }
