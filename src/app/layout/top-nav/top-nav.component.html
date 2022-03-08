@@ -6,17 +6,13 @@
     <h1>Brame Blog </h1>
 
     <a mat-button color="primary" routerLinkActive="active" [routerLink]="''" [routerLinkActiveOptions]="{exact: true}"> Articles </a>
-    <a mat-button color="primary" routerLinkActive="active" mat-button-primary [routerLink]="'/categories'" [routerLinkActiveOptions]="{exact: true}"> Categories </a>
+    <a *ngIf="isLoggedIn" mat-button color="primary" routerLinkActive="active" mat-button-primary [routerLink]="'/categories'" [routerLinkActiveOptions]="{exact: true}"> Categories </a>
     <span class="menu-spacer"></span>
-    <a mat-button color="primary"> Logout </a>
+    <span *ngIf="isLoggedIn">Logged in as Admin</span>
+    <a *ngIf="isLoggedIn" mat-button color="primary"> Logout </a>
+    <a *ngIf="!isLoggedIn" mat-button color="primary" (click)="onLoginClick()"> Login </a>
+
     <div>
-
-      <!-- <a mat-button [routerLink]="'/create-account'"> Create Account </a>
-      <a mat-button [routerLink]="'/contacts'"> Contacts </a>
-      <a mat-button [routerLink]="'/create-contact'"> Create Contact </a>
-      <a mat-button [routerLink]="'/activities'"> Activities </a>
-      <a mat-button [routerLink]="'/create-activity'"> Create Activity </a> -->
-
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

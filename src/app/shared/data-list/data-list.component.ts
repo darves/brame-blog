@@ -14,6 +14,9 @@ export class DataListComponent implements OnInit {
   @Input()
   api!: ResourceList;
 
+  @Input()
+  params?: any;
+
   response!: ApiResponse<ResourceGetDTO>;
 
   constructor() { }
@@ -23,7 +26,7 @@ export class DataListComponent implements OnInit {
       throw 'ResourceList not passed'
     }
 
-    this.api.getList()
+    this.api.getList(this.params)
       .subscribe((resp) => {
         this.response = resp;
       });

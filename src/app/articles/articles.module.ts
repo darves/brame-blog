@@ -5,6 +5,8 @@ import { ArticlesRoutingModule } from './articles-routing.module';
 import { ArticlesListComponent } from './articles-list/articles-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { ArticleDetailsComponent } from './article-details/article-details.component';
+import { MaterialModule } from 'src/app/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { ArticleDetailsComponent } from './article-details/article-details.compo
   imports: [
     CommonModule,
     ArticlesRoutingModule,
-    SharedModule
+    MaterialModule,
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class ArticlesModule { }

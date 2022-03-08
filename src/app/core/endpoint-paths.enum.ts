@@ -1,3 +1,8 @@
+
+/**
+ * this is not required and needed but just to make our validation provider readability better
+ * I come up with this as fastest solution.
+ */
 export enum EndpointPaths {
   Articles = '/articles',
   ArticlesSingle = '/articles/{article_id}',

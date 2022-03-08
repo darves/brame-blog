@@ -1,0 +1,13 @@
+<form #articleDetailForm class="example-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" value="Google">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" placeholder=""></textarea>
+  </mat-form-field>
+
+  <button  mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+</form>

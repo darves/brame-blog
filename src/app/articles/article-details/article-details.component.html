@@ -1,1 +1,39 @@
-<p>article-details works!</p>
+<form #articleDetailForm class="example-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" value="Google">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Body</mat-label>
+    <textarea matInput formControlName="body" placeholder=""></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label translate="">Category</mat-label>
+      <mat-select formControlName="category_id">
+        <mat-option *ngFor="let category of categories" [value]="category.value">
+          {{category.label}}
+        </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+  <button *ngIf="!isReadOnly" mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+</form>
+
+<ng-container *ngIf="id">
+  <h1>Comments</h1>
+
+  <app-data-list [api]="articleCommentsResourceService" [params]="id">
+    <ng-template #itemTemplate let-item>
+      <div>
+        <h3>{{item.title}}</h3>
+        <p>{{item.description}}</p>
+        <small>Created {{item.created_at | date}}, </small>
+        <small>Updated {{item.updated_at | date}}</small>
+        <hr>
+      </div>
+    </ng-template>
+  </app-data-list>
+</ng-container>
+

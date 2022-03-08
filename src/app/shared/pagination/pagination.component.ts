@@ -17,7 +17,7 @@ export class PaginationComponent implements OnInit {
     this._apiResponse = apiResponse;
     this.pages = [];
 
-    if (apiResponse) {
+    if (apiResponse && apiResponse.links) {
       apiResponse.links.forEach((item) => {
         this.pages.push({
           isDisabled: item.active || item.url === null,

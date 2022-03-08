@@ -1,1 +1,9 @@
-<p>categories-list works!</p>
+<app-data-list [api]="categoriesResourceService">
+  <ng-template #itemTemplate let-item>
+    <div>
+      <h1> <a [routerLink]="['/categories', item.id]">{{item.name}}</a></h1>
+      <p>{{item.description}}</p>
+      <span>--------------------------------------------</span>
+    </div>
+  </ng-template>
+</app-data-list>

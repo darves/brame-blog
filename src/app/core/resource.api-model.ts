@@ -8,6 +8,10 @@ export class BaseApiResponse<T = ResourceGetDTO> {
   data!: T[];
 }
 
+export class BaseApiSingleResponse<T = ResourceGetDTO> {
+  data!: T;
+}
+
 export class ApiResponse<T> extends BaseApiResponse<T> {
   current_page!: number;
   first_page_url!: string;
