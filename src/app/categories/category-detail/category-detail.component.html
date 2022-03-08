@@ -1,3 +1,6 @@
+<p *ngIf="model">
+  Updated At: {{model.createdAt | date:'medium'}}, Updated At: {{model.createdAt | date:'medium'}}
+</p>
 <form #articleDetailForm class="example-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
