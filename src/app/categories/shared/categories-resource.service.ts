@@ -17,7 +17,8 @@ export class CategoriesResourceService implements ResourceList{
 
   getList(params?: any): Observable<ApiResponse<CategoryGetDTO>> {
     return this.resourceService.getRequest<CategoryGetDTO>({
-      url: `${ResourceService.apiUrlPlaceholder}${EndpointPaths.Categories}`
+      url: `${ResourceService.apiUrlPlaceholder}${EndpointPaths.Categories}`,
+      endpointPath: EndpointPaths.Categories
     });
   }
 
@@ -26,13 +27,15 @@ export class CategoriesResourceService implements ResourceList{
     url = url.replace('{category_id}', id);
 
     return this.resourceService.getSingle<CategoryGetDTO>({
-      url: url
+      url: url,
+      endpointPath: this.endpointSingle
     });
   }
 
   changePage(url: string): Observable<ApiResponse<any>> {
     return this.resourceService.getRequest<CategoryGetDTO>({
-      url: url
+      url: url,
+      endpointPath: EndpointPaths.Categories
     });
 }
 

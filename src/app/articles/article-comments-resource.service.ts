@@ -16,7 +16,8 @@ export class ArticleCommentsResourceService implements ResourceList {
     url = url.replace('{article_id}', articleId + '');
 
     return this.resourceService.getRequest<any>({
-      url: url
+      url: url,
+      endpointPath: EndpointPaths.ArticlesComments
     });
   }
 

@@ -17,13 +17,15 @@ export class ArticlesResourceService implements ResourceList {
   // I would prefer here doing page change differently but api works on this way so...
   changePage(url: string): Observable<ApiResponse<any>> {
     return this.resourceService.getRequest<any>({
-      url: url
+      url: url,
+      endpointPath: this.endpoint
     });
   }
 
   getList(): Observable<ApiResponse<any>> {
     return this.resourceService.getRequest<any>({
-      url: `${ResourceService.apiUrlPlaceholder}${this.endpoint}`
+      url: `${ResourceService.apiUrlPlaceholder}${this.endpoint}`,
+      endpointPath: this.endpoint
     })
   }
 
@@ -32,7 +34,8 @@ export class ArticlesResourceService implements ResourceList {
     url = url.replace('{article_id}', id);
 
     return this.resourceService.getSingle<ResourceGetDTO>({
-      url: url
+      url: url,
+      endpointPath: this.endpointSingle
     });
   }
 }
