@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EndpointPaths } from '../core/endpoint-paths.enum';
-import { ApiResponse, ResourceGetDTO } from '../core/resource.api-model';
-import { ResourceList, ResourceService } from '../core/resource.service';
-import { ArticleGetDTO, ArticlePostDTO, ArticlePutDTO } from './shared/article.api-model';
+import { EndpointPaths } from '../../core/endpoint-paths.enum';
+import { ApiResponse, ResourceGetDTO } from '../../core/resource.api-model';
+import { ResourceList, ResourceService } from '../../core/resource.service';
+import { ArticleGetDTO, ArticlePostDTO, ArticlePutDTO } from './article.api-model';
 
 @Injectable({
   providedIn: 'root'

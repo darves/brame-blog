@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from 'src/app/app-user.service';
-import { ArticlesResourceService } from '../articles-resource.service';
+import { ArticlesResourceService } from '../shared/articles-resource.service';
 
 @Component({
   selector: 'app-articles-list',
