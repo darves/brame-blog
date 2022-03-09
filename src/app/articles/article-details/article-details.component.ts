@@ -10,10 +10,10 @@ import { DropdownItem } from 'src/app/core/dropdown-item';
 import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
 import { mapper } from 'src/app/core/mapper';
 import { ValidationProviderService } from 'src/app/core/validation-provider.service';
-import { ArticleCommentsResourceService } from '../article-comments-resource.service';
 import { ArticlesResourceService } from '../shared/articles-resource.service';
 import { ArticleGetDTO, ArticlePostDTO, ArticlePutDTO } from '../shared/article.api-model';
 import { ArticleModel } from '../shared/article.model';
+import { ArticleCommentsResourceService } from '../shared/article-comments-resource.service';
 
 @Component({
   selector: 'app-article-details',

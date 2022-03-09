@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EndpointPaths } from '../core/endpoint-paths.enum';
-import { ApiResponse } from '../core/resource.api-model';
-import { ResourceList, ResourceService } from '../core/resource.service';
+import { EndpointPaths } from 'src/app/core/endpoint-paths.enum';
+import { ApiResponse } from 'src/app/core/resource.api-model';
+import { ResourceList, ResourceService } from 'src/app/core/resource.service';
 
 @Injectable({
   providedIn: 'root'
